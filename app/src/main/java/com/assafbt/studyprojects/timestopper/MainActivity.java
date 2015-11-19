@@ -22,7 +22,6 @@ public class MainActivity extends Activity {
     private TextView bestValue;
 
     private boolean isRunning = false;
-    private boolean isStopped = true;
 
     Random rn;
     int rand;
@@ -44,12 +43,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // logs
         Log.e("", "error");
 
         SharedPreferences prefs = getSharedPreferences("best", MODE_PRIVATE);
         final SharedPreferences.Editor editor = prefs.edit();
 
-
+        // Initializes buttons
         leftBtn = (Button) findViewById(R.id.rightButton);
         rightBtn = (Button) findViewById(R.id.leftButton);
         leftBtn.setText("1");
@@ -57,11 +57,12 @@ public class MainActivity extends Activity {
 
 
 
-
+        // Initializes text view
         timerValue = (TextView) findViewById(R.id.timerValue);
         bestValue = (TextView) findViewById(R.id.bestValue);
         bestValue.setText(prefs.getLong("best", bestTime)+"");
         bestTime = prefs.getLong("best", bestTime);
+
 
         secs = (int) (bestTime / 1000);
         mins = secs / 60;
@@ -72,7 +73,7 @@ public class MainActivity extends Activity {
 
 
 
-
+        // set left button
         leftBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -84,6 +85,7 @@ public class MainActivity extends Activity {
         });
 
 
+        // set right button
         rightBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -99,7 +101,7 @@ public class MainActivity extends Activity {
 
 
 
-
+        // click on best record text view
         bestValue.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -128,33 +130,29 @@ public class MainActivity extends Activity {
 
     }
 
+    // start method
     private void start(){
         if (!isRunning) {
             isRunning = true;
             startTime = SystemClock.uptimeMillis();
             customHandler.postDelayed(updateTimerThread, 0);
-            //    }
-            //    else { // timeInMilliseconds
-                    /*    if ("is_running") {
-
-                        }
-                    */
-
-            //    } // else timeInMilliseconds
-        } else {
+        }
+        else {
             //do nothing;
         }
 
 
     }
 
+    // stop method
     private void stop(SharedPreferences.Editor editor){
         customHandler.removeCallbacks(updateTimerThread);
         if (isRunning) {//running
             isRunning = false;
-            if ((bestTime > updatedTime) || (bestTime== 0)) { //change best
+            if ((bestTime > updatedTime) || (bestTime== 0)) { //check the best
                 bestTime = updatedTime;
 
+                // update best time for layout case
                 editor.putLong("best", bestTime);
                 editor.apply();
 
@@ -164,23 +162,17 @@ public class MainActivity extends Activity {
                 milliseconds = (int) (updatedTime % 1000);
 
                 bestValue.setText(" " + mins + ":" + String.format("%02d", secs) + ":" + String.format("%03d", milliseconds));
-                // bestValue.setText("best " + i);
             }
         }
 
-        //}
+        // random the buttons
         rn = new Random();
         rand = rn.nextInt(2);
-        if(rand==1) {              //t=1: change button, t=2: nothing change
-           // if (leftBtn.getId() == R.id.leftButton) {
-                //leftBtn = (Button) findViewById(R.id.rightButton);
-               // rightBtn = (Button) findViewById(R.id.leftButton);
+        if(rand==1) {
                 leftBtn.setText("1");
                 rightBtn.setText("2");
             }
             else {
-                //leftBtn = (Button) findViewById(R.id.leftButton);
-               // rightBtn = (Button) findViewById(R.id.rightButton);
                 leftBtn.setText("2");
                 rightBtn.setText("1");
             }
@@ -191,7 +183,7 @@ public class MainActivity extends Activity {
     }
 
 
-
+    // time running
     private Runnable updateTimerThread = new Runnable() {
 
         public void run() {
@@ -206,7 +198,7 @@ public class MainActivity extends Activity {
            milliseconds = (int) (updatedTime % 1000);
             timerValue.setText(" " + mins + ":" + String.format("%02d", secs) + ":" + String.format("%03d", milliseconds));
             customHandler.postDelayed(this, 0);
-           // bestValue.setText("" + mins + ":" + String.format("%02d", secs) + ":" + String.format("%03d", milliseconds));
+
         }
 
     };
