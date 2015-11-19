@@ -8,4 +8,4 @@
 
 
 
-##### to download and run the App go to [here] (https://github.com/assafbt/TimeStopper/blob/master/TimeStopper.apk) 
+##### to download and run the App go to [here] (https://github.com/assafbt/TimeStopper/blob/master/TimeStopper.apk?raw=true) 
