@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
     int rand;
 
     private long startTime = 0;
-    private long bestTime = 5555555;
+    private long bestTime = 000000;
 
     private Handler customHandler = new Handler();
 
